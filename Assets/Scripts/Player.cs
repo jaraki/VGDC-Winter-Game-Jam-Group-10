@@ -71,19 +71,19 @@ public class Player : MonoBehaviour {
         currentTime -= Time.deltaTime;
 
         // for testing purposes only
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             changeHealth(-10f);
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             changeMana(-10f);
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             changeStamina(-10f);
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.Y))
         {
             changeTime(10f);
         }
@@ -173,25 +173,27 @@ public class Player : MonoBehaviour {
         currentTime += delta;
     }
 
-    void updateCount(Collider other)
+    void OnCollisionEnter2D(Collision2D col)
     {
-        // Update score counter by picking up certain items
-        // values are placeholder for now
-        if (other.gameObject.CompareTag("Health"))
+        if (col.gameObject.CompareTag("Health"))
         {
             currentScore++;
+            changeHealth(10f);
         }
-        else if (other.gameObject.CompareTag("Mana"))
+        else if (col.gameObject.CompareTag("Mana"))
         {
             currentScore++;
+            changeMana(10f);
         }
-        else if (other.gameObject.CompareTag("Time"))
+        else if (col.gameObject.CompareTag("Stamina"))
         {
             currentScore++;
+            changeStamina(10f);
         }
-        else if (other.gameObject.CompareTag("Food"))
+        else if (col.gameObject.CompareTag("Time"))
         {
             currentScore++;
+            changeTime(10f);
         }
     }
 
