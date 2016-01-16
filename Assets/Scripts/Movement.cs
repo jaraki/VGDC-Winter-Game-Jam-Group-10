@@ -28,6 +28,7 @@ public class Movement : MonoBehaviour {
 	{
 		grounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, whatisGround);
 	}
+		
 
 	// Update is called once per frame
 	void Update () 
