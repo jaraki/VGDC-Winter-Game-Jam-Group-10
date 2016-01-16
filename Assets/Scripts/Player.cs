@@ -11,10 +11,10 @@ public class Player : MonoBehaviour {
     public float currentStamina;
     public float maxTime;
     public float currentTime;
+    public GameObject fireball;
     public float currentScore;
     public Text scoreText;
 
-    private Vector3 screenPoint;
     private GameObject mainBar;
     private Image healthBar;
     private Image manaBar;
@@ -87,10 +87,14 @@ public class Player : MonoBehaviour {
         {
             changeTime(10f);
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(fireball);
+        }
         normalizeValues();
         setBars();
         printScoreOnScreen();
-	}
+    }
 
     void setBars()
     {
@@ -175,23 +179,19 @@ public class Player : MonoBehaviour {
         // values are placeholder for now
         if (other.gameObject.CompareTag("Health"))
         {
-            gameObject.SetActive(false);
-            currentScore += 1;
+            currentScore++;
         }
         else if (other.gameObject.CompareTag("Mana"))
         {
-            gameObject.SetActive(false);
-            currentScore += 1;
+            currentScore++;
         }
         else if (other.gameObject.CompareTag("Time"))
         {
-            gameObject.SetActive(false);
-            currentScore += 1;
+            currentScore++;
         }
         else if (other.gameObject.CompareTag("Food"))
         {
-            gameObject.SetActive(false);
-            currentScore += 1;
+            currentScore++;
         }
     }
 
@@ -199,4 +199,5 @@ public class Player : MonoBehaviour {
     {
         scoreText.text = "Score: " + currentScore.ToString();
     }
+
 }
