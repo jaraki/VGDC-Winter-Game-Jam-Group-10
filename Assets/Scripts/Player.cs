@@ -87,9 +87,9 @@ public class Player : MonoBehaviour {
         {
             changeTime(10f);
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            Instantiate(fireball);
+            Instantiate(fireball, transform.transform.position, Quaternion.identity);
         }
         normalizeValues();
         setBars();

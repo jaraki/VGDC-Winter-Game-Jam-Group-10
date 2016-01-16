@@ -4,8 +4,8 @@ using System.Collections;
 public class Movement : MonoBehaviour {
 
 
-	public float speed = 20f;
-	public float lift = 100f;
+	public float speed;
+	public float lift;
 	public Transform groundCheck;
 	public float groundCheckRadius;
 	public LayerMask whatisGround;

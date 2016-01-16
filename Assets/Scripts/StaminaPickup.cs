@@ -7,14 +7,7 @@ public class Food : MonoBehaviour {
 	public AudioClip collected;
 	
 	void OnTriggerEnter2D(Collider2D other){
-		if (other.tag == "Player") {
-//			PlayerStamina playerStamina = other.GetComponent<PlayerStamina>();
-//			
-//			playerStamina.stamina += staminaAmount;
-//			playerStamina.stamina = Mathf.Clamp(playerHealth.stamina, 0f, 100f);
-//			
-//			playerStamina.UpdateStaminaBar();
-			
+		if (other.tag == "Player") {			
 			Destroy(transform.root.gameObject); 
 			
 		}
