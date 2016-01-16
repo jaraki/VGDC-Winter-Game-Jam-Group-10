@@ -11,7 +11,8 @@ public class Player : MonoBehaviour {
     public float currentStamina;
     public float maxTime;
     public float currentTime;
-
+    public float currentScore;
+    public Text scoreText;
 
     private Vector3 screenPoint;
     private GameObject mainBar;
@@ -59,6 +60,10 @@ public class Player : MonoBehaviour {
         timeBar.color = Color.yellow;
         timeBar.rectTransform.pivot = Vector2.zero;
         timeBar.rectTransform.sizeDelta = new Vector2(300f, 20f);
+
+        // Score text
+        currentScore = 0;
+        printScoreOnScreen();
     }
 	
 	// Update is called once per frame
@@ -84,7 +89,7 @@ public class Player : MonoBehaviour {
         }
         normalizeValues();
         setBars();
-        
+        printScoreOnScreen();
 	}
 
     void setBars()
@@ -164,4 +169,34 @@ public class Player : MonoBehaviour {
         currentTime += delta;
     }
 
+    void updateCount(Collider other)
+    {
+        // Update score counter by picking up certain items
+        // values are placeholder for now
+        if (other.gameObject.CompareTag("Health"))
+        {
+            gameObject.SetActive(false);
+            currentScore += 1;
+        }
+        else if (other.gameObject.CompareTag("Mana"))
+        {
+            gameObject.SetActive(false);
+            currentScore += 1;
+        }
+        else if (other.gameObject.CompareTag("Time"))
+        {
+            gameObject.SetActive(false);
+            currentScore += 1;
+        }
+        else if (other.gameObject.CompareTag("Food"))
+        {
+            gameObject.SetActive(false);
+            currentScore += 1;
+        }
+    }
+
+    void printScoreOnScreen()
+    {
+        scoreText.text = "Score: " + currentScore.ToString();
+    }
 }
