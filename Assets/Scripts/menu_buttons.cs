@@ -17,4 +17,9 @@ public class menu_buttons : MonoBehaviour {
     {
         Application.LoadLevel(controlName);
     }
+
+    public void exitToMain(string toMain)
+    {
+        Application.LoadLevel(toMain);
+    }
 }
