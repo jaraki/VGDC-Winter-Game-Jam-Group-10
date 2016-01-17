@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class camerControl : MonoBehaviour {
-    public Movement thePlayer;
+    public Player thePlayer;
 
     private Vector3 lastPoisition;
     private float distanceTravelX;
@@ -10,7 +10,7 @@ public class camerControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        thePlayer = FindObjectOfType<Movement>();
+        thePlayer = FindObjectOfType<Player>();
         lastPoisition = thePlayer.transform.position;
 	}
 	
