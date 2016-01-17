@@ -11,6 +11,9 @@ public class Player : MonoBehaviour {
     public float currentStamina;
     public float maxTime;
     public float currentTime;
+    public float currentSpeed;
+    public float maxSpeed;
+    public float lift;
     public GameObject fireball;
 
     private GameObject mainBar;
@@ -19,10 +22,26 @@ public class Player : MonoBehaviour {
     private Image staminaBar;
     private Image timeBar;
 
+    private bool grounded;
+    private Rigidbody2D rb;
+
+    // sprite orientation variables
+    private Transform model;
+    private float flipX;
+    private float modelPosX;
+    private bool isFlipped; // true when facing right; false when facing left
+
     const float barHeight = 20f;
     const float barWidth = 200f;
 	// Use this for initialization
 	void Start () {
+        // getting components
+        rb = GetComponent<Rigidbody2D>();
+        // sprite flipping
+        model = transform.Find("Sprite");
+        flipX = model.localScale.x;
+        modelPosX = model.localPosition.x;
+
         // main bar
         mainBar = new GameObject(gameObject.name + " bars");
         mainBar.transform.parent = GameObject.Find("Canvas").transform;
@@ -89,9 +108,11 @@ public class Player : MonoBehaviour {
             {
                 Instantiate(fireball, transform.transform.position, Quaternion.identity);
                 changeMana(-10f);
+                fireball.GetComponent<Fireball>().rb.velocity = new Vector2(1000f, 0f);
             }
             
         }
+        handleVelocityAndOrientation();
         normalizeValues();
         setBars();
     }
@@ -107,6 +128,41 @@ public class Player : MonoBehaviour {
         staminaBar.rectTransform.sizeDelta = new Vector2(currentStamina / maxStamina * barWidth, barHeight);
         timeBar.rectTransform.anchoredPosition = new Vector3(0f, Screen.height - 4f * offset, 0f);
         timeBar.rectTransform.sizeDelta = new Vector2(currentTime / maxTime * barWidth, barHeight);
+    }
+
+    void handleVelocityAndOrientation()
+    {
+        if (rb.velocity.y == 0)
+        {
+            grounded = true;
+        }
+        else
+        {
+            grounded = false;
+        }
+
+        float moveX = Input.GetAxis("Horizontal");
+
+        if (Input.GetKeyDown("space") && grounded)
+        {
+            rb.velocity = new Vector2(moveX * currentSpeed, lift);
+        }
+        else if (!grounded)
+        {
+            rb.velocity = new Vector2(moveX * currentSpeed * 0.5f, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2((moveX * currentSpeed), rb.velocity.y);
+        }
+
+        rb.velocity = new Vector2(moveX * currentSpeed, rb.velocity.y);
+        isFlipped = moveX > 0f;
+        int flip = isFlipped ? -1 : 1;
+        model.localScale = new Vector3(flipX * flip, model.localScale.y, model.localScale.z);
+        model.localPosition = new Vector3(modelPosX * flip, model.localPosition.y, model.localPosition.z);
+        currentStamina += flip * rb.velocity.x * 0.1f;
+        currentSpeed = (currentStamina / maxStamina) * maxSpeed + 5f;
     }
 
     void normalizeValues()
