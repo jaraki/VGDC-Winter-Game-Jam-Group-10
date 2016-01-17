@@ -6,38 +6,40 @@ public class Movement : MonoBehaviour {
 
 	public float speed;
 	public float lift;
-	public Transform groundCheck;
-	public float groundCheckRadius;
-	public LayerMask whatisGround;
-	private bool grounded;
+	bool grounded;
 
 	private Rigidbody2D rb;
-	private BoxCollider2D bc;
 
-
-	// Use this for initialization
 	void Start () {
 
 		rb = GetComponent<Rigidbody2D> ();
-		bc = GetComponent<BoxCollider2D>();
-		groundCheckRadius = 0.1f;
-		groundCheck = GetComponent<Transform>();
 	}
 
-	void FixedUpdate ()
-	{
-		grounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, whatisGround);
-	}
-
-	// Update is called once per frame
 	void Update () 
 	{
+
+		if (rb.velocity.y == 0) 
+		{
+			grounded = true;
+		}
+		else 
+		{
+			grounded = false;
+		}
+
 		float moveX = Input.GetAxis ("Horizontal");
 
-		if (Input.GetKeyDown ("space")) {	
+		if (Input.GetKeyDown ("space") && grounded) 
+		{	
 			rb.velocity = new Vector2 (moveX * speed, lift);	
 		}
-			
-		rb.velocity = new Vector2 (moveX * speed, rb.velocity.y);
+		else if(!grounded) 
+		{	
+			rb.velocity = new Vector2 (moveX * speed * 0.5f, rb.velocity.y);
+		} 
+		else 
+		{
+			rb.velocity = new Vector2 ((moveX * speed), rb.velocity.y);
+		}
 	}
 }
