@@ -4,10 +4,12 @@ using System.Collections;
 public class levelGeneration : MonoBehaviour {
 
     public GameObject theLevel;
+    public GameObject[] arrayOfLevel;
     public Transform generationPoint;
     public float distance;
 
     private float distanceLevel;
+    private int randomLevel;
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +23,9 @@ public class levelGeneration : MonoBehaviour {
         {
             transform.position = new Vector3(transform.position.x + distanceLevel + distance, transform.position.y, transform.position.z);
 
-            Instantiate(theLevel, transform.position, transform.rotation);
+            randomLevel = Random.Range(0, arrayOfLevel.Length);
+
+            Instantiate(arrayOfLevel[randomLevel], transform.position, transform.rotation);
         }
 
 	
