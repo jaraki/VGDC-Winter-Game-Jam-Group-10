@@ -26,6 +26,7 @@ public class levelGeneration : MonoBehaviour {
             randomLevel = Random.Range(0, arrayOfLevel.Length);
 
             Instantiate(arrayOfLevel[randomLevel], transform.position, transform.rotation);
+
         }
 
 	

@@ -20,7 +20,7 @@ public class CameraControl : MonoBehaviour {
 	void Update () {
         distanceTravelX = thePlayer.transform.position.x - lastPosition.x;
         distanceTravelY = thePlayer.transform.position.y - lastPosition.y;
-        transform.position = new Vector3(transform.position.x + distanceTravelX, transform.position.y + distanceTravelY, transform.position.z);
+        transform.position = new Vector3(transform.position.x + distanceTravelX, transform.position.y, transform.position.z);
         lastPosition = thePlayer.transform.position;
         if(transform.position.y < 0f)
         {
