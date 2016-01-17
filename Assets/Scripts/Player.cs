@@ -25,6 +25,8 @@ public class Player : MonoBehaviour {
     private bool grounded;
     private Rigidbody2D rb;
 
+    private float invulnTimer;
+
     // sprite orientation variables
     private Transform model;
     private float flipX;
@@ -84,6 +86,7 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         currentTime -= Time.deltaTime;
+        invulnTimer -= Time.deltaTime;
 
         // for testing purposes only
         if (Input.GetKeyDown(KeyCode.E))
@@ -252,6 +255,15 @@ public class Player : MonoBehaviour {
         {
             Game.instance.currentScore++;
             changeTime(10f);
+        }
+        else if (col.gameObject.CompareTag("Enemy"))
+        {
+            if(invulnTimer > 0f)
+            {
+                return;
+            }
+            changeHealth(-10f);
+            invulnTimer = 2f;
         }
     }
 
