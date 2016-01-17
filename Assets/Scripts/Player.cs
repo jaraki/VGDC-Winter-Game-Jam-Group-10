@@ -193,7 +193,7 @@ public class Player : MonoBehaviour {
             }
 
             rb.velocity = new Vector2(moveX * currentSpeed, rb.velocity.y);
-            isFlipped = rb.velocity.x < 0f;
+            isFlipped = transform.forward.x == -1f || rb.velocity.x < 0f;
             int flip = isFlipped ? 1 : -1;
             model.localScale = new Vector3(flipX * flip, model.localScale.y, model.localScale.z);
             model.localPosition = new Vector3(modelPosX * flip, model.localPosition.y, model.localPosition.z);

@@ -13,9 +13,12 @@ public class EnemyPatrol : MonoBehaviour {
     public float speed;
     public bool moving;
     public bool towards1;
+    private float currentHealth;
+    public float maxHealth;
     // Use this for initialization
     void Start () {
         animator = this.GetComponent<Animator>();
+        currentHealth = maxHealth;
 	}
 	
 	// Update is called once per frame
@@ -59,6 +62,19 @@ public class EnemyPatrol : MonoBehaviour {
                 moving = false;
                 towards1 = true;
             }
+        }
+
+        if(currentHealth <= 0f)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if(col.gameObject.CompareTag("Fireball"))
+        {
+            currentHealth -= 10f;
         }
     }
 }
