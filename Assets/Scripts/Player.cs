@@ -29,7 +29,7 @@ public class Player : MonoBehaviour {
     private Transform model;
     private float flipX;
     private float modelPosX;
-    private bool isFlipped; // true when facing right; false when facing left
+    private bool isFlipped; // false when facing right; true when facing left
 
     const float barHeight = 20f;
     const float barWidth = 200f;
@@ -106,9 +106,11 @@ public class Player : MonoBehaviour {
         {
             if(currentMana >= 10f)
             {
-                Instantiate(fireball, transform.transform.position, Quaternion.identity);
+                int dir = isFlipped ? -1 : 1;
+                Vector3 offset = dir * Vector3.right;
+                Instantiate(fireball, transform.transform.position + offset , Quaternion.identity);
                 changeMana(-10f);
-                fireball.GetComponent<Fireball>().rb.velocity = new Vector2(1000f, 0f);
+                fireball.GetComponent<Fireball>().rb.AddForce(new Vector2(1000f, 0f));
             }
             
         }
@@ -157,8 +159,8 @@ public class Player : MonoBehaviour {
         }
 
         rb.velocity = new Vector2(moveX * currentSpeed, rb.velocity.y);
-        isFlipped = moveX > 0f;
-        int flip = isFlipped ? -1 : 1;
+        isFlipped = moveX < 0f;
+        int flip = isFlipped ? 1 : -1;
         model.localScale = new Vector3(flipX * flip, model.localScale.y, model.localScale.z);
         model.localPosition = new Vector3(modelPosX * flip, model.localPosition.y, model.localPosition.z);
         currentStamina += flip * rb.velocity.x * 0.1f;
