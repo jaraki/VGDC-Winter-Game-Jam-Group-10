@@ -43,8 +43,6 @@ public class EnemyPatrol : MonoBehaviour {
         {
             if (towards1 && Vector2.Distance(pat1.transform.position, enemy.transform.position) >.1)
             {
-                print(pat1.transform.position);
-                print(enemy.transform.position);
                 enemy.transform.position = Vector2.MoveTowards(enemy.transform.position, pat1.transform.position, step);
             }
             else if (!towards1 && Vector2.Distance(pat2.transform.position, enemy.transform.position) > .1)
