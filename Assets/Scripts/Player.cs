@@ -17,6 +17,16 @@ public class Player : MonoBehaviour {
     public float currentCastTime;
     public float maxCastTime;
     public GameObject fireball;
+    public GameObject floor;
+    public GameObject ceiling;
+    public GameObject leftSide;
+    public GameObject rightSide;
+    public BoxCollider2D top;
+    public BoxCollider2D bottom;
+    public BoxCollider2D left;
+    public BoxCollider2D right;
+    public float counter;
+    public float maxCounter = 1.5f;
 
     private GameObject mainBar;
     private Image healthBar;
@@ -102,12 +112,25 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        counter += Time.deltaTime; 
         currentTime -= Time.deltaTime;
         invulnTimer -= Time.deltaTime;
+        if (counter >= maxCounter)
+        {
+            counter = 0;
+            setNull();
+        }
         castFireball();
         handleVelocityAndOrientation();
         normalizeValues();
         setBars();
+    }
+    void setNull()
+    {
+        ceiling = null;
+        floor = null;
+        leftSide = null;
+        rightSide = null;
     }
     void castFireball()
     {
@@ -178,7 +201,23 @@ public class Player : MonoBehaviour {
             }
 
             float moveX = Input.GetAxis("Horizontal");
-
+            float moveDown = Input.GetAxis("Vertical");
+            if (moveDown < 0 && floor != null &&floor.CompareTag("Dirt"))
+            {
+                Destroy(floor);
+            }
+            else if (moveDown > 0 && ceiling != null && ceiling.CompareTag("Dirt"))
+            {
+                Destroy(ceiling);
+            }
+            else if (moveX > 0 && leftSide != null && leftSide.CompareTag("Dirt"))
+            {
+                Destroy(leftSide);
+            }
+            else if (moveX < 0 && rightSide != null && rightSide.CompareTag("Dirt"))
+            {
+                Destroy(rightSide);
+            }
             if (Input.GetKeyDown("space") && grounded)
             {
                 rb.velocity = new Vector2(moveX * currentSpeed, lift);
@@ -270,6 +309,7 @@ public class Player : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D col)
     {
+        Collider2D collider = col.contacts[0].otherCollider;
         if (col.gameObject.CompareTag("Health"))
         {
             Game.instance.currentScore++;
@@ -292,12 +332,29 @@ public class Player : MonoBehaviour {
         }
         else if (col.gameObject.CompareTag("Enemy"))
         {
-            if(invulnTimer > 0f)
+            if (invulnTimer > 0f)
             {
                 return;
             }
             changeHealth(-10f);
             invulnTimer = 2f;
+        }
+        if (collider == top)
+        {
+            ceiling = col.gameObject;
+        }
+        else if (collider == bottom)
+        {
+            floor = col.gameObject;
+        }
+        else if (collider == left)
+        {
+            leftSide = col.gameObject;
+        }
+        else if (collider == right)
+        {
+            rightSide = col.gameObject;
+
         }
     }
 
