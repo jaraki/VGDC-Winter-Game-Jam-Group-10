@@ -15,7 +15,9 @@ public class Player : MonoBehaviour {
     public float maxSpeed;
     public float lift;
     public float currentCastTime;
-    public float maxCastTime;
+    public float maxCastTime = 2.0f;
+    public float currentDigTime;
+    public float maxDigTime;
     public GameObject fireball;
     public GameObject floor;
     public GameObject ceiling;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour {
     private bool grounded;
     private bool canMove;
     private bool isCasting;
+    private bool isDigging;
     private Rigidbody2D rb;
 
     private float invulnTimer;
@@ -56,6 +59,7 @@ public class Player : MonoBehaviour {
 	void Start () {
         isCasting = false;
         canMove = true;
+        isDigging = false;
 
         // getting components
         rb = GetComponent<Rigidbody2D>();
@@ -112,25 +116,26 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        counter += Time.deltaTime; 
         currentTime -= Time.deltaTime;
         invulnTimer -= Time.deltaTime;
-        if (counter >= maxCounter)
-        {
-            counter = 0;
-            setNull();
-        }
+        castTimeDig();
         castFireball();
         handleVelocityAndOrientation();
         normalizeValues();
         setBars();
     }
-    void setNull()
+    void castTimeDig()
     {
-        ceiling = null;
-        floor = null;
-        leftSide = null;
-        rightSide = null;
+        if (isDigging)
+        {
+            currentDigTime += Time.deltaTime;
+        }
+        if (currentDigTime >= maxDigTime)
+        {
+            currentDigTime = 0f;
+            canMove = true;
+            isDigging = false;
+        }
     }
     void castFireball()
     {
@@ -172,21 +177,27 @@ public class Player : MonoBehaviour {
         timeBar.rectTransform.anchoredPosition = new Vector3(0f, Screen.height - 4f * offset, 0f);
         timeBar.rectTransform.sizeDelta = new Vector2(currentTime / maxTime * barWidth, barHeight);
 
-        if (isCasting)
+        if (isCasting || isDigging)
         {
             castBar.enabled = true;
             screenPoint = Camera.main.WorldToScreenPoint(transform.transform.position);
             screenPoint.x -= 50f;
             screenPoint.y -= 200f / Camera.main.orthographicSize;
             castBar.rectTransform.anchoredPosition = screenPoint;
-            castBar.rectTransform.sizeDelta = new Vector2(0.5f * currentCastTime / maxCastTime * barWidth, 0.5f * barHeight);
+            if (isDigging)
+            {
+                castBar.rectTransform.sizeDelta = new Vector2(0.5f * currentDigTime / maxDigTime * barWidth, 0.5f * barHeight);
+            }
+            else
+            {
+                castBar.rectTransform.sizeDelta = new Vector2(0.5f * currentCastTime / maxCastTime * barWidth, 0.5f * barHeight);
+            }
         }
         else
         {
             castBar.enabled = false;
         }
     }
-
     void handleVelocityAndOrientation()
     {
         if(canMove)
@@ -202,21 +213,31 @@ public class Player : MonoBehaviour {
 
             float moveX = Input.GetAxis("Horizontal");
             float moveDown = Input.GetAxis("Vertical");
-            if (moveDown < 0 && floor != null &&floor.CompareTag("Dirt"))
+            if (moveDown < 0 && floor != null && floor.CompareTag("Dirt"))
             {
-                Destroy(floor);
+                Destroy(floor, maxDigTime);
+                canMove = false;
+                isDigging = true;
+                floor = null;
             }
             else if (moveDown > 0 && ceiling != null && ceiling.CompareTag("Dirt"))
             {
-                Destroy(ceiling);
+                Destroy(ceiling, maxDigTime);
+                canMove = false;
+                isDigging = true;
+                ceiling = null;
             }
             else if (moveX > 0 && leftSide != null && leftSide.CompareTag("Dirt"))
             {
-                Destroy(leftSide);
+                Destroy(leftSide, maxDigTime);
+                canMove = false;
+                isDigging = true;
             }
             else if (moveX < 0 && rightSide != null && rightSide.CompareTag("Dirt"))
             {
-                Destroy(rightSide);
+                Destroy(rightSide, maxDigTime);
+                canMove = false;
+                isDigging = true;
             }
             if (Input.GetKeyDown("space") && grounded)
             {
@@ -232,7 +253,10 @@ public class Player : MonoBehaviour {
             }
 
             rb.velocity = new Vector2(moveX * currentSpeed, rb.velocity.y);
-            isFlipped = transform.forward.x == -1f || rb.velocity.x < 0f;
+            if (rb.velocity.x < 0f && !isFlipped || rb.velocity.x > 0f && isFlipped)
+            {
+                isFlipped = !isFlipped;
+            }
             int flip = isFlipped ? 1 : -1;
             model.localScale = new Vector3(flipX * flip, model.localScale.y, model.localScale.z);
             model.localPosition = new Vector3(modelPosX * flip, model.localPosition.y, model.localPosition.z);
@@ -307,7 +331,7 @@ public class Player : MonoBehaviour {
         currentTime += delta;
     }
 
-    void OnCollisionEnter2D(Collision2D col)
+    void OnCollisionStay2D(Collision2D col)
     {
         Collider2D collider = col.contacts[0].otherCollider;
         if (col.gameObject.CompareTag("Health"))
@@ -354,6 +378,28 @@ public class Player : MonoBehaviour {
         else if (collider == right)
         {
             rightSide = col.gameObject;
+
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D col)
+    {
+        Collider2D collider = col.contacts[0].otherCollider;
+        if (collider == top)
+        {
+            ceiling = null;
+        }
+        else if (collider == bottom)
+        {
+            floor = null;
+        }
+        else if (collider == left)
+        {
+            leftSide = null;
+        }
+        else if (collider == right)
+        {
+            rightSide = null;
 
         }
     }
