@@ -12,8 +12,6 @@ public class Player : MonoBehaviour {
     public float maxTime;
     public float currentTime;
     public GameObject fireball;
-    public float currentScore;
-    public Text scoreText;
 
     private GameObject mainBar;
     private Image healthBar;
@@ -61,9 +59,7 @@ public class Player : MonoBehaviour {
         timeBar.rectTransform.pivot = Vector2.zero;
         timeBar.rectTransform.sizeDelta = new Vector2(300f, 20f);
 
-        // Score text
-        currentScore = 0;
-        printScoreOnScreen();
+
     }
 	
 	// Update is called once per frame
@@ -89,11 +85,15 @@ public class Player : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Instantiate(fireball, transform.transform.position, Quaternion.identity);
+            if(currentMana >= 10f)
+            {
+                Instantiate(fireball, transform.transform.position, Quaternion.identity);
+                changeMana(-10f);
+            }
+            
         }
         normalizeValues();
         setBars();
-        printScoreOnScreen();
     }
 
     void setBars()
@@ -177,29 +177,29 @@ public class Player : MonoBehaviour {
     {
         if (col.gameObject.CompareTag("Health"))
         {
-            currentScore++;
+            Game.instance.currentScore++;
             changeHealth(10f);
         }
         else if (col.gameObject.CompareTag("Mana"))
         {
-            currentScore++;
+            Game.instance.currentScore++;
             changeMana(10f);
         }
         else if (col.gameObject.CompareTag("Stamina"))
         {
-            currentScore++;
+            Game.instance.currentScore++;
             changeStamina(10f);
         }
         else if (col.gameObject.CompareTag("Time"))
         {
-            currentScore++;
+            Game.instance.currentScore++;
             changeTime(10f);
         }
     }
 
-    void printScoreOnScreen()
+    public bool isDead()
     {
-        scoreText.text = "Score: " + currentScore.ToString();
+        return currentTime == 0 || currentHealth == 0;
     }
 
 }

@@ -64,9 +64,12 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\DirtBehaviour.cs" />
     <Compile Include="Assets\Scripts\Fireball.cs" />
+    <Compile Include="Assets\Scripts\Game.cs" />
     <Compile Include="Assets\Scripts\Item.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\camerControl.cs" />
+    <Compile Include="Assets\Scripts\levelGeneration.cs" />
     <Compile Include="Assets\Scripts\menu_buttons.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
