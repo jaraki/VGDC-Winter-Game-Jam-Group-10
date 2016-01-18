@@ -8,12 +8,10 @@ public class levelGeneration : MonoBehaviour {
     public Transform generationPoint;
     public float distance;
 
-    private float distanceLevel;
     private int randomLevel;
 
 	// Use this for initialization
 	void Start () {
-        distanceLevel = theLevel.GetComponent<BoxCollider2D>().size.x;
 	
 	}
 	
@@ -21,7 +19,7 @@ public class levelGeneration : MonoBehaviour {
 	void Update () {
         if (transform.position.x < generationPoint.position.x)
         {
-            transform.position = new Vector3(transform.position.x + distanceLevel + distance, transform.position.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x + distance, transform.position.y, transform.position.z);
 
             randomLevel = Random.Range(0, arrayOfLevel.Length);
 
