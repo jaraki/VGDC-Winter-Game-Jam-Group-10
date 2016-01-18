@@ -331,9 +331,8 @@ public class Player : MonoBehaviour {
         currentTime += delta;
     }
 
-    void OnCollisionStay2D(Collision2D col)
+    void OnCollisionEnter2D(Collision2D col)
     {
-        Collider2D collider = col.contacts[0].otherCollider;
         if (col.gameObject.CompareTag("Health"))
         {
             Game.instance.currentScore++;
@@ -363,6 +362,11 @@ public class Player : MonoBehaviour {
             changeHealth(-10f);
             invulnTimer = 2f;
         }
+    }
+    void OnCollisionStay2D(Collision2D col)
+    {
+        Collider2D collider = col.contacts[0].otherCollider;
+    
         if (collider == top)
         {
             ceiling = col.gameObject;
