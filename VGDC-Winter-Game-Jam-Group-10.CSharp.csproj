@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Game.cs" />
     <Compile Include="Assets\Scripts\HillGenerator.cs" />
     <Compile Include="Assets\Scripts\Item.cs" />
+    <Compile Include="Assets\Scripts\Menu.cs" />
     <Compile Include="Assets\Scripts\PlatformGenerator.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Teleport.cs" />
@@ -80,7 +81,6 @@
     <Compile Include="Assets\Scripts\TerrainManager.cs" />
     <Compile Include="Assets\Scripts\TerrainMap.cs" />
     <Compile Include="Assets\Scripts\levelGeneration.cs" />
-    <Compile Include="Assets\Scripts\menu_buttons.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
