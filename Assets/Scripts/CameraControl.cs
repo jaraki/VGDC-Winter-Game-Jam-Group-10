@@ -7,7 +7,6 @@ public class CameraControl : MonoBehaviour {
     private Vector3 initialPosition;
     private Vector3 lastPosition;
     private float distanceTravelX;
-    private float distanceTravelY;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +18,6 @@ public class CameraControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         distanceTravelX = thePlayer.transform.position.x - lastPosition.x;
-        distanceTravelY = thePlayer.transform.position.y - lastPosition.y;
         transform.position = new Vector3(transform.position.x + distanceTravelX, transform.position.y, transform.position.z);
         lastPosition = thePlayer.transform.position;
         if(transform.position.y < 0f)

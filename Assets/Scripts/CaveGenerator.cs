@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CaveGenerator : BaseGenerator {
     public int yOffset = 12;
+    public float stoneFreq;
+    public float enemyFreq;
 
 	void FillAll()
     {
@@ -13,7 +15,15 @@ public class CaveGenerator : BaseGenerator {
                 if(y < yOffset)
                 {
                     // fill in the map with stone bricks
-                    CurrentMap[x, y] = 6;
+                    if(Random.Range(0f, 1f) <= stoneFreq)
+                    {
+                        CurrentMap[x, y] = 6;
+                    }
+                    else
+                    {
+                        CurrentMap[x, y] = 5;
+                    }
+                    
                 }
                 else
                 {
@@ -43,10 +53,11 @@ public class CaveGenerator : BaseGenerator {
 
     public void CreateCave(int x, int y)
     {
-        int xMin = Random.Range(x + 1, x + yOffset / 2);
-        int yMin = Random.Range(y + 1, y + yOffset / 2);
+        int xMin = Random.Range(x + 1, x + yOffset / 2 - 1);
+        int yMin = Random.Range(y + 1, y + yOffset / 2 - 1);
         int xMax = Random.Range(x + yOffset / 2 + 1, x + yOffset);
         int yMax = Random.Range(y + yOffset / 2 + 1, y + yOffset);
+        bool spawnEnemy = Random.Range(0f, 1f) < enemyFreq;
         for (int dx = xMin; dx < xMax; dx++)
         {
             for (int dy = yMin; dy < yMax; dy++)
@@ -55,8 +66,36 @@ public class CaveGenerator : BaseGenerator {
                 CurrentMap[dx, dy] = 0;
             }
         }
+        // spawn an enemy if necessary
+        if(spawnEnemy)
+        {
+            CurrentMap[Random.Range(xMin + 1, xMax - 1), yMin] = 7;
+            Debug.Log("Enemy spawned");
+        }
         // fill in the map with a random item
-        CurrentMap[Random.Range(xMin, xMax), Random.Range(yMin, yMax)] = Random.Range(1, 5);
-        CurrentMap[Random.Range(xMin, xMax), Random.Range(yMin, yMax)] = Random.Range(1, 5);
+        int numItems = Random.Range(1, 4);
+        for(int i = 0; i < numItems; i ++)
+        {
+            int itemIndex = Random.Range(1, 5);
+            if(itemIndex == 3)
+            {
+                // make sure that stamina does not spawn in caves
+                bool up = Random.Range(0, 2) == 0;
+                if(up)
+                {
+                    itemIndex++;
+                }
+                else
+                {
+                    itemIndex--;
+                }
+            }
+            int dx = Random.Range(xMin, xMax);
+            int dy = Random.Range(yMin, yMax);
+            if(CurrentMap[dx, dy] == 0)
+            {
+                CurrentMap[dx, dy] = itemIndex;
+            }
+        }
     }
 }

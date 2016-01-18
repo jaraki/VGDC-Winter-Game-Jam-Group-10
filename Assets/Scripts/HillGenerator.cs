@@ -22,11 +22,11 @@ public class HillGenerator : BaseGenerator
                 float height = contourCurve.Evaluate(xf) * heightScale * Mathf.PerlinNoise(xf * xScale, yNoise);
                 if (yf > height)
                 {
-                    CurrentMap[x, y] = 0;
+                    CurrentMap[x, y] = 0;   
                 }
                 else
                 {
-                    CurrentMap[x, y] = 6;
+                    CurrentMap[x, y] = Random.Range(5, 7);
                 }
             }
         }

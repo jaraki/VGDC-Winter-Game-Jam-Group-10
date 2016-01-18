@@ -22,7 +22,7 @@ public class TerrainLoader : MonoBehaviour {
                 {
                     GameObject go = (GameObject)Instantiate(prefabs[TerrainMap[x, y]]);
                     go.transform.parent = transform.transform;
-                    go.transform.localPosition = new Vector3(x - 35f, y - 15f, 0);
+                    go.transform.localPosition = new Vector3(x - 33f, y - 9f, 0);
                 }
             }
         }
