@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/TestProcGen.unity
+- path: Assets/Scenes/David Test Scene Collider.unity
   isLoaded: 1
   isActive: 1
