@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\CaveGenerator.cs" />
      <Compile Include="Assets\Scripts\DestroyGeneration.cs" />
      <Compile Include="Assets\Scripts\DirtBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Dust.cs" />
      <Compile Include="Assets\Scripts\EnemyPatrol.cs" />
      <Compile Include="Assets\Scripts\Fireball.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />
@@ -62,11 +63,17 @@
      <Compile Include="Assets\Scripts\TerrainMap.cs" />
      <Compile Include="Assets\Scripts\levelGeneration.cs" />
      <Compile Include="Assets\Scripts\menu_buttons.cs" />
+ <Reference Include="UnityEngine.Advertisements">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/Mono.Cecil.dll</HintPath>

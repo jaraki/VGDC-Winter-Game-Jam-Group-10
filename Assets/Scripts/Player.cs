@@ -18,6 +18,7 @@ public class Player : MonoBehaviour {
     public float maxCastTime = 2.0f;
     public float currentDigTime;
     public float maxDigTime;
+    public GameObject dust;
     public GameObject fireball;
     public GameObject floor;
     public GameObject ceiling;
@@ -215,6 +216,9 @@ public class Player : MonoBehaviour {
             float moveDown = Input.GetAxis("Vertical");
             if (moveDown < 0 && floor != null && floor.CompareTag("Dirt"))
             {
+                Vector2 temp = floor.transform.position;
+                Quaternion tempq = floor.transform.rotation;
+                Instantiate(dust, temp, tempq);
                 Destroy(floor, maxDigTime);
                 canMove = false;
                 isDigging = true;
@@ -222,6 +226,9 @@ public class Player : MonoBehaviour {
             }
             else if (moveDown > 0 && ceiling != null && ceiling.CompareTag("Dirt"))
             {
+                Vector2 temp = ceiling.transform.position;
+                Quaternion tempq = ceiling.transform.rotation;
+                Instantiate(dust, temp, tempq);
                 Destroy(ceiling, maxDigTime);
                 canMove = false;
                 isDigging = true;
@@ -229,12 +236,18 @@ public class Player : MonoBehaviour {
             }
             else if (moveX > 0 && leftSide != null && leftSide.CompareTag("Dirt"))
             {
+                Vector2 temp = leftSide.transform.position;
+                Quaternion tempq = leftSide.transform.rotation;
+                Instantiate(dust, temp, tempq);
                 Destroy(leftSide, maxDigTime);
                 canMove = false;
                 isDigging = true;
             }
             else if (moveX < 0 && rightSide != null && rightSide.CompareTag("Dirt"))
             {
+                Vector2 temp = rightSide.transform.position;
+                Quaternion tempq = rightSide.transform.rotation;
+                Instantiate(dust, temp, tempq);
                 Destroy(rightSide, maxDigTime);
                 canMove = false;
                 isDigging = true;
