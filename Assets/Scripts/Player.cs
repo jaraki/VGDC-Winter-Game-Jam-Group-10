@@ -41,6 +41,7 @@ public class Player : MonoBehaviour {
     private Image castBar;
 
     private bool grounded;
+	private bool bouncing;
     private bool canMove;
     private bool isCasting;
     private bool isDigging;
@@ -203,14 +204,29 @@ public class Player : MonoBehaviour {
     {
         if(canMove)
         {
-            if (rb.velocity.y == 0)
-            {
-                grounded = true;
-            }
-            else
-            {
-                grounded = false;
-            }
+			if (floor != null) 
+			{
+				grounded = true;
+				bouncing = false;
+			} 
+			else if (leftSide != null && floor == null) 
+			{
+				grounded = false;
+				bouncing = true;
+
+				rb.MovePosition(new Vector2(rb.position.x - 0.1f, rb.position.y));
+			} 
+			else if (rightSide != null && floor == null) 
+			{
+				grounded = false;
+				bouncing = true;
+
+				rb.MovePosition(new Vector2(rb.position.x + 0.1f, rb.position.y));
+			} 
+			else if (floor == null) 
+			{
+				grounded = false;
+			}
 
             float moveX = Input.GetAxis("Horizontal");
             float moveDown = Input.GetAxis("Vertical");
@@ -252,20 +268,24 @@ public class Player : MonoBehaviour {
                 canMove = false;
                 isDigging = true;
             }
-            if (Input.GetKeyDown("space") && grounded)
-            {
-                rb.velocity = new Vector2(moveX * currentSpeed, lift);
-            }
-            else if (!grounded)
-            {
-                rb.velocity = new Vector2(moveX * currentSpeed * 0.5f, rb.velocity.y);
-            }
-            else
-            {
-                rb.velocity = new Vector2((moveX * currentSpeed), rb.velocity.y);
-            }
 
-            rb.velocity = new Vector2(moveX * currentSpeed, rb.velocity.y);
+			if (Input.GetKeyDown ("space") && grounded) 
+			{
+				rb.velocity = new Vector2 (moveX * currentSpeed, lift);
+			} 
+			else if (bouncing) 
+			{
+				rb.AddForce(new Vector2 (-0.5f * rb.velocity.x, -0.5f * rb.velocity.y));
+			} 
+			else if (!grounded) 
+			{
+				rb.velocity = new Vector2 (moveX * currentSpeed * 0.5f, rb.velocity.y);
+			}
+			else
+			{			
+				rb.velocity = new Vector2((moveX * currentSpeed), rb.velocity.y);
+			}
+				
             if (rb.velocity.x < 0f && !isFlipped || rb.velocity.x > 0f && isFlipped)
             {
                 isFlipped = !isFlipped;
